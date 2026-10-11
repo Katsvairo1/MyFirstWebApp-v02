@@ -1,445 +1,379 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Paradzai Katsvairo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
       content="Paradzai Katsvairo, AI/ML engineer in Bratislava."
     />
+    <title>Paradzai Katsvairo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
     <style>
-      * {
-        box-sizing: border-box;
+      :root {
+        color-scheme: dark;
+        --page: #1c2218;
+        --panel: #242b1e;
+        --text: #f6efe4;
+        --muted: #d8d0c2;
+        --gold: #e2c36a;
+        --line: rgba(246, 239, 228, 0.2);
       }
 
       body {
-        margin: 0;
         min-height: 100vh;
-        font-family: "IBM Plex Mono", monospace;
-        color: #f6efe4;
-        background: #1c2218;
-      }
-
-      .glow {
-        position: fixed;
-        inset: -20%;
+        color: var(--text);
         background:
-          radial-gradient(circle at 70% 20%, rgba(201, 164, 72, 0.28), transparent 42%),
-          radial-gradient(circle at 20% 80%, rgba(90, 120, 64, 0.25), transparent 46%);
-        pointer-events: none;
-      }
-
-      .page {
-        position: relative;
-        z-index: 1;
-        width: min(1100px, 100%);
-        margin: 0 auto;
-        padding: max(20px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
-      }
-
-      nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px 16px;
-      }
-
-      nav a {
-        display: inline-flex;
-        align-items: center;
-        min-height: 44px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      .who {
-        margin: 12px 0 8px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
+          radial-gradient(circle at 70% 20%, rgba(201, 164, 72, 0.2), transparent 32rem),
+          radial-gradient(circle at 20% 80%, rgba(90, 120, 64, 0.2), transparent 34rem),
+          var(--page);
+        font-family: "IBM Plex Mono", monospace;
       }
 
       h1,
       h2,
-      h3 {
+      h3,
+      .navbar-brand,
+      .quote-text {
         font-family: "Archivo Black", sans-serif;
         letter-spacing: -0.03em;
-        overflow-wrap: anywhere;
       }
 
       h1 {
-        font-size: clamp(1.85rem, 11vw, 2.6rem);
-        line-height: 0.95;
-        margin: 0 0 10px;
+        font-size: clamp(2.25rem, 6vw, 4.4rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
       }
 
-      h2 {
-        margin: 0 0 12px;
-      }
-
+      h2,
       h3 {
-        margin: 16px 0 8px;
+        color: var(--gold);
       }
 
-      .role {
-        margin: 0 0 18px;
+      .site-nav,
+      .site-panel {
+        border: 1px solid var(--line);
+        background-color: rgba(36, 43, 30, 0.96);
+      }
+
+      .navbar-brand,
+      .nav-link,
+      .site-link {
+        color: var(--gold);
+      }
+
+      .navbar-brand:hover,
+      .navbar-brand:focus,
+      .nav-link:hover,
+      .nav-link:focus,
+      .site-link:hover,
+      .site-link:focus {
+        color: var(--text);
+      }
+
+      .navbar-toggler {
+        border-color: var(--line);
+      }
+
+      .navbar-toggler:focus {
+        box-shadow: 0 0 0 0.2rem rgba(226, 195, 106, 0.4);
+      }
+
+      .navbar-toggler-icon {
+        filter: invert(1);
+      }
+
+      .text-muted-custom {
+        color: var(--muted);
+      }
+
+      .role,
+      .eyebrow {
+        color: var(--gold);
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
 
-      section {
-        padding: 16px;
-        border: 1px solid rgba(246, 239, 228, 0.18);
+      .site-panel {
+        height: 100%;
       }
 
-      p {
-        margin: 0 0 12px;
-        line-height: 1.6;
-        max-width: 62ch;
-      }
-
-      img {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        margin: 8px 0 0;
-      }
-
-      ul {
-        margin: 0;
-        padding-left: 18px;
-        line-height: 1.7;
-      }
-
-      .split {
-        display: grid;
-        gap: 16px;
-      }
-
-      section + section {
-        margin-top: 16px;
-      }
-
-      .tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .tags li {
-        border: 1px solid rgba(246, 239, 228, 0.2);
-        padding: 6px 10px;
-        font-size: 0.85rem;
-      }
-
-      .tool-search {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 8px;
-        margin: 0 0 12px;
-      }
-
-      .tool-search label,
-      .tool-search output {
-        grid-column: 1 / -1;
-      }
-
-      .tool-search label {
-        color: #d8d0c2;
-      }
-
-      .tool-search input,
-      .tool-search button {
-        min-height: 44px;
-        border: 1px solid rgba(246, 239, 228, 0.35);
-        border-radius: 0;
-        padding: 8px 12px;
-        color: #f6efe4;
-        background: #1c2218;
-        font: inherit;
-      }
-
-      .tool-search button {
-        color: #1c2218;
-        background: #e2c36a;
-        cursor: pointer;
-      }
-
-      .tool-search input:focus-visible,
-      .tool-search button:focus-visible {
-        outline: 2px solid #e2c36a;
-        outline-offset: 2px;
-      }
-
-      .tool-search output {
-        min-height: 1.6em;
-        color: #b7ae9e;
-        font-size: 0.85rem;
-      }
-
-      .tags li[hidden] {
-        display: none;
+      .focus-image {
+        background: var(--page);
       }
 
       .quote-card {
-        border: 1px solid rgba(246, 239, 228, 0.2);
-        padding: 14px;
+        border: 1px solid var(--line);
+        background: var(--page);
       }
 
-      .quote-card blockquote {
-        margin: 0;
-        color: #f6efe4;
-        font-family: "Archivo Black", sans-serif;
-        font-size: clamp(1.15rem, 4vw, 1.5rem);
-        line-height: 1.35;
+      .quote-text {
+        color: var(--text);
+        font-size: clamp(1.15rem, 3vw, 1.5rem);
+        line-height: 1.4;
       }
 
-      .quote-card figcaption {
-        margin-top: 14px;
-        color: #d8d0c2;
+      .form-control {
+        border-color: rgba(246, 239, 228, 0.35);
+        color: var(--text);
+        background-color: var(--page);
       }
 
-      .quote-actions {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
-        margin-top: 14px;
+      .form-control:focus {
+        border-color: var(--gold);
+        color: var(--text);
+        background-color: var(--page);
+        box-shadow: 0 0 0 0.2rem rgba(226, 195, 106, 0.25);
       }
 
-      .quote-actions button {
-        min-height: 44px;
-        border: 1px solid #e2c36a;
-        padding: 8px 12px;
-        color: #1c2218;
-        background: #e2c36a;
-        font: inherit;
+      .form-control::placeholder {
+        color: #b7ae9e;
+      }
+
+      .form-control::-webkit-search-cancel-button {
         cursor: pointer;
       }
 
-      .quote-actions button:focus-visible {
-        outline: 2px solid #f6efe4;
-        outline-offset: 2px;
+      .btn-gold {
+        border-color: var(--gold);
+        color: var(--page);
+        background-color: var(--gold);
       }
 
-      .quote-actions button:disabled {
-        cursor: wait;
-        opacity: 0.7;
+      .btn-gold:hover,
+      .btn-gold:focus {
+        border-color: #f0d987;
+        color: var(--page);
+        background-color: #f0d987;
       }
 
-      #quote-status {
-        min-height: 1.6em;
+      .btn-outline-gold {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+
+      .btn-outline-gold:hover,
+      .btn-outline-gold:focus {
+        color: var(--page);
+        background-color: var(--gold);
+      }
+
+      .tool-tag[hidden] {
+        display: none !important;
+      }
+
+      .status-text {
+        min-height: 1.5em;
         color: #b7ae9e;
-        font-size: 0.85rem;
+        font-size: 0.875rem;
       }
 
-      .quote-source {
-        display: inline-block;
-        margin-bottom: 12px;
-        color: #e2c36a;
+      :focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 3px;
       }
 
-      .quote-source:focus-visible {
-        outline: 2px solid #f6efe4;
-        outline-offset: 2px;
-      }
-
-      footer {
-        margin-top: 20px;
-      }
-
-      footer a {
-        color: #e2c36a;
-      }
-
-      @media (min-width: 800px) {
-        .page {
-          display: grid;
-          grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.15fr);
-          column-gap: 48px;
-          align-items: start;
-          min-height: 100vh;
-          padding: 56px 40px;
-        }
-
-        header {
-          position: sticky;
-          top: 56px;
-          grid-row: 1 / -1;
-        }
-
-        h1 {
-          font-size: clamp(2.6rem, 5vw, 4.4rem);
-        }
-
-        section {
-          padding: 22px 26px;
-        }
-
-        .split {
-          grid-template-columns: 1fr 1fr;
-          align-items: start;
-        }
-
-        .quote-card {
-          padding: 18px;
-        }
-
-        footer {
-          grid-column: 2;
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
   </head>
   <body>
-    <div class="glow"></div>
-    <div class="page">
-      <header>
-        <nav>
-          <a href="#focus" title="Jump to work focus" style="color: #e2c36a; text-decoration: none">Focus</a>
-          <a href="#stack" title="Jump to tools" style="color: #e2c36a; text-decoration: none">Stack</a>
-          <a href="#path" title="Jump to study path" style="color: #e2c36a; text-decoration: none">Path</a>
-          <a
-            href="https://www.linkedin.com/in/paradzai-katsvairo-70b60b14b"
-            title="Paradzai Katsvairo on LinkedIn"
-            target="_blank"
-            rel="noopener noreferrer"
-            style="color: #e2c36a; text-decoration: none"
-            >LinkedIn</a
-          >
-        </nav>
-        <p class="who" style="color: #c9bfae">Bratislava</p>
-        <h1 style="color: #f6efe4">Paradzai Katsvairo</h1>
-        <p class="role" style="color: #e2c36a">Medior AI/ML engineer</p>
-      </header>
+    <div class="container py-3 py-lg-5">
+      <div class="row g-4 g-xl-5">
+        <header class="col-12 col-lg-4">
+          <nav class="navbar navbar-expand-lg navbar-dark site-nav p-3 mb-4" aria-label="Main navigation">
+            <a class="navbar-brand fs-6" href="#top">PK</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#site-navigation"
+              aria-controls="site-navigation"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="site-navigation">
+              <ul class="navbar-nav ms-lg-auto">
+                <li class="nav-item"><a class="nav-link" href="#focus">Focus</a></li>
+                <li class="nav-item"><a class="nav-link" href="#stack">Stack</a></li>
+                <li class="nav-item"><a class="nav-link" href="#path">Path</a></li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="https://www.linkedin.com/in/paradzai-katsvairo-70b60b14b"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a
+                  >
+                </li>
+              </ul>
+            </div>
+          </nav>
 
-      <main>
-        <section id="focus" style="background-color: #242b1e">
-          <h2 style="color: #e2c36a">Focus</h2>
-          <p style="color: #efe6d6">
-            I work on language models, retrieval and agents, and on putting those systems into
-            production without turning them into a black box.
-          </p>
-          <p style="color: #d8d0c2">
-            I am studying an MSc in Computer Science with Artificial Intelligence. This site is the
-            public layer around that work — markup, not a model.
-          </p>
-          <h3 style="color: #f6efe4">What I keep on the desk</h3>
-          <div class="split">
-            <ul style="color: #d8d0c2">
-              <li>Retrieval and context for language models</li>
-              <li>Agents that can be inspected, not just demoed</li>
-              <li>Clear HTML so a page still makes sense without the styling</li>
+          <div class="px-2 px-lg-0" id="top">
+            <p class="eyebrow mb-2">Bratislava</p>
+            <h1 class="mb-3">Paradzai Katsvairo</h1>
+            <p class="role mb-4">Medior AI/ML engineer</p>
+          </div>
+        </header>
+
+        <main class="col-12 col-lg-8">
+          <section class="site-panel p-3 p-md-4 mb-4" id="focus" aria-labelledby="focus-heading">
+            <h2 class="h3 mb-3" id="focus-heading">Focus</h2>
+            <p>
+              I work on language models, retrieval and agents, and on putting those systems into
+              production without turning them into a black box.
+            </p>
+            <p class="text-muted-custom">
+              I am studying an MSc in Computer Science with Artificial Intelligence. This site is
+              the public layer around that work — markup, not a model.
+            </p>
+            <h3 class="h5 mt-4 mb-3">What I keep on the desk</h3>
+            <div class="row g-3 align-items-center">
+              <ul class="col-12 col-md-7 text-muted-custom mb-0">
+                <li class="mb-2">Retrieval and context for language models</li>
+                <li class="mb-2">Agents that can be inspected, not just demoed</li>
+                <li>Clear HTML so a page still makes sense without the styling</li>
+              </ul>
+              <div class="col-12 col-md-5">
+                <img
+                  class="img-fluid focus-image"
+                  src="mark.svg"
+                  alt="Four connected nodes, a simple picture of parts talking to each other."
+                  width="320"
+                  height="200"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="site-panel p-3 p-md-4 mb-4" id="field-note" aria-labelledby="quote-heading">
+            <h2 class="h3 mb-3" id="quote-heading">Field note</h2>
+            <p class="text-muted-custom">
+              A fresh thought on work, learning, or creativity — delivered by FreeAPI.
+            </p>
+            <a
+              class="site-link d-inline-block mb-3"
+              href="https://api.freeapi.app/api/v1/public/quotes/quote/random"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View the FreeAPI endpoint<span class="visually-hidden"> (opens in a new tab)</span></a
+            >
+            <figure class="quote-card rounded p-3 p-md-4 mb-3" aria-busy="true">
+              <blockquote class="quote-text mb-0" id="quote-content" aria-live="polite">
+                Loading a field note…
+              </blockquote>
+              <figcaption class="text-muted-custom mt-3" id="quote-author"></figcaption>
+            </figure>
+            <div class="d-flex flex-wrap align-items-center gap-3">
+              <button class="btn btn-gold rounded-0" id="quote-refresh" type="button" disabled>
+                Get another quote
+              </button>
+              <output class="status-text" id="quote-status" aria-live="polite">
+                Connecting to FreeAPI…
+              </output>
+            </div>
+          </section>
+
+          <section class="site-panel p-3 p-md-4 mb-4" id="stack" aria-labelledby="stack-heading">
+            <h2 class="h3 mb-3" id="stack-heading">Stack</h2>
+            <p class="text-muted-custom">
+              Three years shipping retrieval, agents and backends — Python and FastAPI in
+              production, with models that can be observed rather than only demoed.
+            </p>
+            <h3 class="h5 mt-4 mb-3">Tools I use</h3>
+            <form id="tool-search" role="search" aria-label="Search tools" class="mb-3">
+              <label class="form-label text-muted-custom" for="tool-query">Find a tool</label>
+              <div class="input-group">
+                <input
+                  class="form-control rounded-0"
+                  id="tool-query"
+                  name="q"
+                  type="search"
+                  placeholder="Try Python or RAG"
+                  autocomplete="off"
+                  aria-describedby="tool-count"
+                />
+                <button class="btn btn-outline-gold rounded-0" type="reset">Clear</button>
+              </div>
+              <output class="status-text d-block mt-2" id="tool-count" aria-live="polite"></output>
+            </form>
+            <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0 text-muted-custom" id="tool-list">
+              <li class="tool-tag border px-3 py-2">LangGraph</li>
+              <li class="tool-tag border px-3 py-2">LangChain</li>
+              <li class="tool-tag border px-3 py-2">MCP</li>
+              <li class="tool-tag border px-3 py-2">RAG</li>
+              <li class="tool-tag border px-3 py-2">Python</li>
+              <li class="tool-tag border px-3 py-2">FastAPI</li>
+              <li class="tool-tag border px-3 py-2">Docker</li>
+              <li class="tool-tag border px-3 py-2">Kubernetes</li>
+              <li class="tool-tag border px-3 py-2">MongoDB</li>
+              <li class="tool-tag border px-3 py-2">Hugging Face</li>
             </ul>
-            <img
-              src="mark.svg"
-              alt="Four connected nodes, a simple picture of parts talking to each other."
-              title="Connected nodes"
-              width="320"
-              height="200"
-              style="background-color: #1c2218"
-            />
-          </div>
-        </section>
+          </section>
 
-        <section id="field-note" style="background-color: #242b1e">
-          <h2 style="color: #e2c36a">Field note</h2>
-          <p style="color: #d8d0c2">
-            A fresh thought on work, learning, or creativity — delivered by FreeAPI.
-          </p>
+          <section class="site-panel p-3 p-md-4 mb-4" id="path" aria-labelledby="path-heading">
+            <h2 class="h3 mb-3" id="path-heading">Path</h2>
+            <p class="text-muted-custom">
+              MSc Computer Science with Artificial Intelligence at Sheffield Hallam University (in
+              progress). BCom in Business Informatics from the University of South Africa.
+            </p>
+            <h3 class="h5 mt-4 mb-3">Certificates</h3>
+            <ul class="text-muted-custom mb-0">
+              <li class="mb-2">IBM RAG and Agentic AI Professional Certificate</li>
+              <li class="mb-2">IBM Build AI Agents using MCP</li>
+              <li class="mb-2">Microsoft Azure AI Fundamentals</li>
+              <li>Duke University DevOps, DataOps, MLOps</li>
+            </ul>
+          </section>
+        </main>
+
+        <footer class="col-12 col-lg-8 offset-lg-4 text-muted-custom small">
+          Paradzai Katsvairo ·
           <a
-            class="quote-source"
-            href="https://api.freeapi.app/api/v1/public/quotes/quote/random"
+            class="site-link"
+            href="https://www.linkedin.com/in/paradzai-katsvairo-70b60b14b"
             target="_blank"
             rel="noopener noreferrer"
-            >View the FreeAPI endpoint</a
+            >LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a
           >
-          <figure class="quote-card" aria-busy="true">
-            <blockquote id="quote-content" aria-live="polite">Loading a field note…</blockquote>
-            <figcaption id="quote-author"></figcaption>
-          </figure>
-          <div class="quote-actions">
-            <button id="quote-refresh" type="button" disabled>Get another quote</button>
-            <output id="quote-status" aria-live="polite">Connecting to FreeAPI…</output>
-          </div>
-        </section>
-
-        <section id="stack" style="background-color: #242b1e">
-          <h2 style="color: #e2c36a">Stack</h2>
-          <p style="color: #d8d0c2">
-            Three years shipping retrieval, agents and backends — Python and FastAPI in production,
-            with models that can be observed rather than only demoed.
-          </p>
-          <h3 style="color: #f6efe4">Tools I use</h3>
-          <form class="tool-search" id="tool-search" role="search">
-            <label for="tool-query">Find a tool</label>
-            <input
-              id="tool-query"
-              name="q"
-              type="search"
-              placeholder="Try Python or RAG"
-              autocomplete="off"
-            />
-            <button type="reset">Clear</button>
-            <output id="tool-count" aria-live="polite"></output>
-          </form>
-          <ul class="tags" style="color: #d8d0c2">
-            <li>LangGraph</li>
-            <li>LangChain</li>
-            <li>MCP</li>
-            <li>RAG</li>
-            <li>Python</li>
-            <li>FastAPI</li>
-            <li>Docker</li>
-            <li>Kubernetes</li>
-            <li>MongoDB</li>
-            <li>Hugging Face</li>
-          </ul>
-        </section>
-
-        <section id="path" style="background-color: #242b1e">
-          <h2 style="color: #e2c36a">Path</h2>
-          <p style="color: #d8d0c2">
-            MSc Computer Science with Artificial Intelligence at Sheffield Hallam University (in
-            progress). BCom in Business Informatics from the University of South Africa.
-          </p>
-          <h3 style="color: #f6efe4">Certificates</h3>
-          <ul style="color: #d8d0c2">
-            <li>IBM RAG and Agentic AI Professional Certificate</li>
-            <li>IBM Build AI Agents using MCP</li>
-            <li>Microsoft Azure AI Fundamentals</li>
-            <li>Duke University DevOps, DataOps, MLOps</li>
-          </ul>
-        </section>
-      </main>
-
-      <footer style="color: #b7ae9e">
-        Paradzai Katsvairo ·
-        <a
-          href="https://www.linkedin.com/in/paradzai-katsvairo-70b60b14b"
-          title="Open LinkedIn profile"
-          target="_blank"
-          rel="noopener noreferrer"
-          >LinkedIn</a
-        >
-        · <span id="clock"></span>
-      </footer>
+          · <time id="clock"></time>
+        </footer>
+      </div>
     </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
     <script>
       const clock = document.getElementById("clock");
       const toolSearch = document.getElementById("tool-search");
       const toolQuery = document.getElementById("tool-query");
       const toolCount = document.getElementById("tool-count");
-      const tools = [...document.querySelectorAll(".tags li")];
+      const tools = [...document.querySelectorAll(".tool-tag")];
       const quoteCard = document.querySelector(".quote-card");
       const quoteContent = document.getElementById("quote-content");
       const quoteAuthor = document.getElementById("quote-author");
@@ -507,7 +441,9 @@
       loadQuote();
 
       function tick() {
-        clock.textContent = new Date().toLocaleString([], {
+        const now = new Date();
+        clock.dateTime = now.toISOString();
+        clock.textContent = now.toLocaleString([], {
           weekday: "short",
           hour: "2-digit",
           minute: "2-digit",
